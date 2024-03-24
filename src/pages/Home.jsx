@@ -7,13 +7,7 @@ import LiElements from "../components/LiElements";
 import { CRMContext } from "../context/CRMContext";
 
 function Home() {
-  const { leads, notes, setLeads, setNotes } = useContext(CRMContext)
-  // const [leads, setLeads] = useState([])
-  const [name, setName] = useState("")
-  const [lastName, setLastName] = useState("")
-  const [phone, setPhone] = useState("")
-  const [email, setEmail] = useState("")
-  const [inputFields, setInputFields] = useState([""])
+  const { name, lastName, phone, email, inputFields, setName, setLastName, setPhone, setEmail, setInputFields, leads, notes, setLeads, setNotes } = useContext(CRMContext)
 
   const addNewLead = (e) => {
     e.preventDefault();
@@ -36,15 +30,12 @@ function Home() {
     setEmail("")
     setInputFields([])
   }
-
   const handleRemoveFields = (e, index) => {
     e.preventDefault()
     const newInputFields = [...inputFields];
     newInputFields.splice(index, 1);
     setInputFields(newInputFields);
   };
-
-  // Function to update the value of an input field
   const handleValueChange = (e, index) => {
     const values = [...inputFields];
     values[index] = e.target.value;
@@ -67,7 +58,6 @@ function Home() {
     const filterValue = txtSearch.value.trim().toLowerCase();
     filterFunc(filterValue);
   }
-
   return (
     <div className="container shadow p-3 my-5 bg-primary-subtle">
       <h3 className="text-center text-info">*** CRM Project ***</h3>
