@@ -7,17 +7,13 @@ import LiElements from "../components/LiElements";
 import { CRMContext } from "../context/CRMContext";
 
 function Home() {
-  const { leads, notes } = useContext(CRMContext)
-  console.log(leads)
+  const { leads, notes, setLeads, setNotes } = useContext(CRMContext)
   // const [leads, setLeads] = useState([])
   const [name, setName] = useState("")
   const [lastName, setLastName] = useState("")
   const [phone, setPhone] = useState("")
   const [email, setEmail] = useState("")
   const [inputFields, setInputFields] = useState([""])
-
-
-
 
   const addNewLead = (e) => {
     e.preventDefault();
@@ -58,11 +54,28 @@ function Home() {
     e.preventDefault()
     setInputFields([...inputFields, ""])
   }
+  const filterFunc = (filterValue) => {
+    Array.from(tbody.children)
+      .filter((todo) => !todo.textContent.toLowerCase().includes(filterValue))
+      .forEach((todo) => todo.classList.add("filtered"));
 
-
+    Array.from(tbody.children)
+      .filter((todo) => todo.textContent.toLowerCase().includes(filterValue))
+      .forEach((todo) => todo.classList.remove("filtered"));
+  };
+  function filterElement() {
+    const filterValue = txtSearch.value.trim().toLowerCase();
+    filterFunc(filterValue);
+  }
 
   return (
     <>
+      <div className="container pt-3">
+        <div className="form-floating px-2">
+          <input type="text" className="form-control" id="txtSearch" placeholder="Leave a comment here" onKeyUp={filterElement} />
+          <label htmlFor="txtName">Search</label>
+        </div>
+      </div>
       <div className="container py-5">
         <form className="d-flex flex-wrap shadow p-5 align-items-center justify-content-center rounded-3">
           <div className="col-12 col-md-5">

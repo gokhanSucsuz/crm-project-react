@@ -13,7 +13,7 @@ function CRMContextProvider({ children }) {
         setLeads(deletedLeads)
         setNotes(deletedNotes)
     }
-    
+
     useEffect(() => {
         setLeads(localStorage.getItem("leads") ? JSON.parse(localStorage.getItem("leads")) : [])
         setNotes(localStorage.getItem("notes") ? JSON.parse(localStorage.getItem("notes")) : [])
@@ -24,7 +24,7 @@ function CRMContextProvider({ children }) {
         localStorage.setItem("notes", JSON.stringify(notes))
     })
 
-    return <CRMContext.Provider value={{ leads, notes, handleRemove }}>
+    return <CRMContext.Provider value={{ leads, notes, setLeads, setNotes, handleRemove }}>
         {children}
     </CRMContext.Provider>
 }

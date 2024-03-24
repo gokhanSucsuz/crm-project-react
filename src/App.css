@@ -1,3 +1,7 @@
 .pillBadge {
   font-size: 1% !important;
 }
+
+.filtered {
+  display: none !important;
+}

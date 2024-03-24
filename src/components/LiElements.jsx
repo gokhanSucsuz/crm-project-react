@@ -26,7 +26,7 @@ const LiElements = () => {
                                 <th scope="col">Process</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="tbody">
                             {leads.map((lead, index) =>
                                 <tr key={index}>
                                     <th scope="row">{index + 1}</th>
