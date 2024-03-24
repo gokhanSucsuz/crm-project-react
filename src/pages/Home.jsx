@@ -69,14 +69,17 @@ function Home() {
   }
 
   return (
-    <>
-      <div className="container pt-3">
+    <div className="container shadow p-3 my-5 bg-info-subtle">
+      <h3 className="text-center text-info">*** CRM Project ***</h3>
+      <div className="container shadow mt-5 py-3">
+        <h3 className="text-center text-info">*** Search Area ***</h3>
         <div className="form-floating px-2">
           <input type="text" className="form-control" id="txtSearch" placeholder="Leave a comment here" onKeyUp={filterElement} />
-          <label htmlFor="txtName">Search</label>
+          <label htmlFor="txtName">Search Lead...</label>
         </div>
       </div>
       <div className="container py-5">
+        <h3 className="text-center text-info">*** Data Area ***</h3>
         <form className="d-flex flex-wrap shadow p-5 align-items-center justify-content-center rounded-3">
           <div className="col-12 col-md-5">
             <div className="form-floating mb-3 px-2">
@@ -122,11 +125,12 @@ function Home() {
         </form>
       </div>
       <div className="container py-5 shadow rounded-3">
+        <h3 className="text-center text-info">*** List Area ***</h3>
         <ol className="list-group list-group-numbered">
           <LiElements />
         </ol>
       </div>
-    </>
+    </div>
   )
 }
 
