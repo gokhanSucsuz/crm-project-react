@@ -69,7 +69,7 @@ function Home() {
   }
 
   return (
-    <div className="container shadow p-3 my-5 bg-info-subtle">
+    <div className="container shadow p-3 my-5 bg-primary-subtle">
       <h3 className="text-center text-info">*** CRM Project ***</h3>
       <div className="container shadow mt-5 py-3">
         <h3 className="text-center text-info">*** Search Area ***</h3>

@@ -27,24 +27,25 @@ const LiElements = () => {
                             </tr>
                         </thead>
                         <tbody id="tbody">
-                            {leads.map((lead, index) =>
-                                <tr key={index}>
-                                    <th scope="row">{index + 1}</th>
-                                    <td>{lead.name}</td>
-                                    <td>{lead.lastName}</td>
-                                    <td>{lead.phone}</td>
-                                    <td>{lead.email}</td>
-                                    <td>{notes.map((note, index) => <h3 className="badge text-bg-info rounded-pill fw-bolder text-white" key={index}>{note.id == lead.id ? note.notes.length : ""}</h3>)}</td>
-                                    <td>
-                                        <div className="btn-group" role="group">
-                                            <button onClick={() => handleRemove(lead.id)} type="button" className="btn btn-danger">Delete</button>
-                                            <button onClick={() => handleClick(lead.id)} type="button" className="btn btn-warning">Edit</button>
-                                            <button onClick={() => handleClick(lead.id)} type="button" className="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal">Detail</button>
-                                        </div>
+                            {
+                                leads.map((lead, index) =>
+                                    <tr key={index}>
+                                        <th scope="row">{index + 1}</th>
+                                        <td>{lead.name}</td>
+                                        <td>{lead.lastName}</td>
+                                        <td>{lead.phone}</td>
+                                        <td>{lead.email}</td>
+                                        <td>{notes.map((note, index) => <h3 className="badge text-bg-info rounded-pill fw-bolder text-white" key={index}>{note.id == lead.id ? note.notes.length : ""}</h3>)}</td>
+                                        <td>
+                                            <div className="btn-group" role="group">
+                                                <button onClick={() => handleRemove(lead.id)} type="button" className="btn btn-danger">Delete</button>
+                                                <button onClick={() => handleClick(lead.id)} type="button" className="btn btn-warning">Edit</button>
+                                                <button onClick={() => handleClick(lead.id)} type="button" className="btn btn-info" data-bs-toggle="modal" data-bs-target="#exampleModal">Detail</button>
+                                            </div>
 
-                                    </td>
-                                </tr>
-                            )}
+                                        </td>
+                                    </tr>
+                                )}
                         </tbody>
                     </table>
                 </div>
