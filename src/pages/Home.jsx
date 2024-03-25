@@ -7,7 +7,7 @@ import LiElements from "../components/LiElements";
 import { CRMContext } from "../context/CRMContext";
 
 function Home() {
-  const { name, lastName, phone, email, inputFields, setName, setLastName, setPhone, setEmail, setInputFields, leads, notes, setLeads, setNotes } = useContext(CRMContext)
+  const { inputRefs, addToRefs, name, lastName, phone, email, inputFields, setName, setLastName, setPhone, setEmail, setInputFields, leads, notes, setLeads, setNotes } = useContext(CRMContext)
 
   const addNewLead = (e) => {
     e.preventDefault();
@@ -43,7 +43,7 @@ function Home() {
   };
   const addNewNote = (e) => {
     e.preventDefault()
-    setInputFields([...inputFields, ""])
+    setInputFields([...inputFields, { value: "" }])
   }
   const filterFunc = (filterValue) => {
     Array.from(tbody.children)
@@ -94,13 +94,11 @@ function Home() {
               <input type="email" className="form-control" placeholder="Leave a comment here" id="txtEmail" value={email} onChange={(e) => setEmail(e.target.value.trim())} />
               <label htmlFor="txtEmail">Email</label>
             </div>
-          </div>
-
-          {
+          </div>{
             inputFields.map((inputField, index) => (
-              <div className="col-12 col-md-10" key={index}>
+              <div className="inputs col-12 col-md-10" key={index}>
                 <div className="form-floating pb-3 px-2 position-relative">
-                  <textarea className="form-control" id={`note${index + 2}`} placeholder="Leave a comment here" maxLength={512} style={{ height: 100 }} value={inputField.value}
+                  <textarea ref={addToRefs} className="form-control" placeholder="Leave a comment here" maxLength={512} style={{ height: 100 }} value={inputField.value}
                     onChange={(e) => handleValueChange(e, index)} />
                   <label htmlFor={`note${index + 2}`}>Note</label>
                   <button className="delete-btn btn-close position-absolute top-0 end-0 p-3" onClick={(e) => handleRemoveFields(e, index)}>
