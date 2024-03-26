@@ -1,35 +1,16 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useContext, useEffect, useState } from "react";
-import { v4 as uuidv4 } from 'uuid';
+import { useContext, useEffect, useRef, useState } from "react";
 import LiElements from "../components/LiElements";
 import { CRMContext } from "../context/CRMContext";
 
 function Home() {
-  const { value, addToRefs, name, lastName, phone, email, inputFields, setName, setLastName, setPhone, setEmail, setInputFields, leads, notes, setLeads, setNotes } = useContext(CRMContext)
+  const { inputRefs, setInputRefs, handleUpdate, updateBtn, addNewNoteBtn, addNewLeadBtn, value, addToRefs, name, lastName, phone, email, inputFields, setName, setLastName, setPhone, setEmail, setInputFields, leads, notes, setLeads, setNotes, activeRecord, addNewLead } = useContext(CRMContext)
 
-  const addNewLead = (e) => {
-    e.preventDefault();
-    const newLead = {
-      id: uuidv4(),
-      name: name,
-      lastName: lastName,
-      phone: phone,
-      email: email
-    }
-    const newNote = {
-      id: newLead.id,
-      notes: inputFields,
-    }
-    setLeads([...leads, newLead])
-    setNotes([...notes, newNote])
-    setName("")
-    setLastName("")
-    setPhone("")
-    setEmail("")
-    setInputFields([])
-  }
+
+
+
   const handleRemoveFields = (e, index) => {
     e.preventDefault()
     const newInputFields = [...inputFields];
@@ -39,6 +20,8 @@ function Home() {
   const handleValueChange = (e, index) => {
     const values = [...inputFields];
     values[index] = e.target.value;
+    const refs = inputRefs.current
+    refs[index].value = e.target.value;
     setInputFields(values);
   };
   const addNewNote = (e) => {
@@ -100,7 +83,8 @@ function Home() {
             inputFields.map((inputField, index) => (
               <div className="inputs col-12 col-md-10" key={index}>
                 <div className="form-floating pb-3 px-2 position-relative">
-                  <textarea ref={() => addToRefs()} className="form-control" placeholder="Leave a comment here" maxLength={512} style={{ height: 100 }} value={value.length != 0 ? value[index] : inputField.value}
+                  <textarea ref={() => addToRefs()} className="form-control" placeholder="Leave a comment here" maxLength={512} style={{ height: 100 }} value={
+                    value.length != 0 && activeRecord != 0 ? value[index] : inputField.value}
                     onChange={(e) => handleValueChange(e, index)} />
                   <label htmlFor={`note${index + 2}`}>Note</label>
                   <button className="delete-btn btn-close position-absolute top-0 end-0 p-3" onClick={(e) => handleRemoveFields(e, index)}>
@@ -109,8 +93,9 @@ function Home() {
               </div>
             ))}
           <div className="col-10 col-sm-10 buttons d-flex justify-content-between px-2">
-            <button onClick={addNewNote} className="btn btn-sm btn-warning text-white">Add New Note</button>
-            <button onClick={addNewLead} className="btn btn-sm btn-success text-white">Add New Lead</button>
+            <button ref={addNewNoteBtn} onClick={addNewNote} className="btn btn-sm btn-warning text-white">Add New Note</button>
+            <button ref={updateBtn} onClick={handleUpdate} className="btn d-none btn-sm btn-success text-white">Update Lead Info</button>
+            <button ref={addNewLeadBtn} onClick={addNewLead} className="btn btn-sm btn-success text-white">Add New Lead</button>
           </div>
         </form>
       </div>

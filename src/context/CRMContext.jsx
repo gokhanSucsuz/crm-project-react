@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { createContext, useEffect, useRef, useState } from "react";
-
+import { v4 as uuidv4 } from 'uuid';
 
 const CRMContext = createContext();
 function CRMContextProvider({ children }) {
@@ -13,19 +13,70 @@ function CRMContextProvider({ children }) {
     const [leads, setLeads] = useState([])
     const [notes, setNotes] = useState([])
     const inputRefs = useRef([])
-    const [onlyNotes, setOnlyNotes] = useState([])
-    const [value, setValue] = useState([])
     inputRefs.current = []
 
+    const [activeRecord, setActiveRecord] = useState("")
+    const [editCount, setEditCount] = useState(0)
+    const [onlyNotes, setOnlyNotes] = useState([])
+    const [value, setValue] = useState([])
+    const addNewNoteBtn = useRef()
+    const addNewLeadBtn = useRef()
+    const updateBtn = useRef()
 
-    const handleRemove = (id) => {
+    function handleRemove(id) {
         const deletedLeads = leads.filter(lead => lead.id !== id)
-        const deletedNotes = notes.filter(note => note.id != id)
+        const deletedNotes = notes.filter(note => note.id !== id)
         setLeads(deletedLeads)
         setNotes(deletedNotes)
     }
-    const handleEdit = (id) => {
 
+    const addNewLead = (e) => {
+        e.preventDefault();
+        const newLead = {
+            id: activeRecord != "" ? activeRecord : uuidv4(),
+            name: name,
+            lastName: lastName,
+            phone: phone,
+            email: email
+        }
+        const newNote = {
+            id: newLead.id,
+            notes: inputFields,
+        }
+
+        setLeads([...leads, newLead])
+        setNotes([...notes, newNote])
+
+        setName("")
+        setLastName("")
+        setPhone("")
+        setEmail("")
+        setInputFields([])
+    }
+
+    const handleUpdate = (e) => {
+        e.preventDefault()
+
+        leads.map(lead => {
+            if (lead.id == activeRecord) {
+                lead.name = name;
+                lead.lastName = lastName;
+                lead.phone = phone;
+                lead.email = email;
+            }
+        })
+        addNewNoteBtn.current.removeAttribute("disabled", false)
+        updateBtn.current.classList.add("d-none")
+        setName("")
+        setLastName("")
+        setPhone("")
+        setEmail("")
+        setInputFields([])
+        setActiveRecord("")
+    }
+
+    const handleEdit = (id) => {
+        setEditCount(editCount + 1)
         const editedLead = leads.filter(lead => lead.id == id)
         const editedNote = notes.filter(note => note.id == id)
         setName(editedLead[0].name)
@@ -34,11 +85,13 @@ function CRMContextProvider({ children }) {
         setEmail(editedLead[0].email)
         setInputFields(editedNote[0].notes)
         setOnlyNotes(editedNote[0].notes)
-
+        addNewNoteBtn.current.setAttribute("disabled", true)
+        updateBtn.current.classList.remove("d-none")
+        setActiveRecord(id)
     }
     useEffect(() => {
         refsToWrite()
-    }, [onlyNotes.length])
+    }, [editCount])
 
     const addToRefs = (ref) => {
         if (ref && !inputRefs.current.includes(ref)) {
@@ -53,14 +106,6 @@ function CRMContextProvider({ children }) {
         setValue(arr)
     }
 
-
-
-    const handleUpdate = () => {
-
-    }
-
-
-
     useEffect(() => {
         setLeads(localStorage.getItem("leads") ? JSON.parse(localStorage.getItem("leads")) : [])
         setNotes(localStorage.getItem("notes") ? JSON.parse(localStorage.getItem("notes")) : [])
@@ -72,7 +117,9 @@ function CRMContextProvider({ children }) {
 
     })
 
-    return <CRMContext.Provider value={{ value, setValue, addToRefs, inputRefs, active, setActive, name, setName, setLastName, setPhone, setEmail, setInputFields, lastName, phone, email, inputFields, leads, notes, setLeads, setNotes, handleRemove, handleEdit, handleUpdate }}>
+    return <CRMContext.Provider value={{
+        value, setValue, addToRefs, inputRefs, active, setActive, name, setName, setLastName, setPhone, setEmail, setInputFields, lastName, phone, email, inputFields, leads, notes, setLeads, setNotes, handleRemove, handleEdit, handleUpdate, addNewNoteBtn, addNewLeadBtn, updateBtn, activeRecord, setActiveRecord, addNewLead
+    }}>
         {children}
     </CRMContext.Provider>
 }
