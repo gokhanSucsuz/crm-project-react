@@ -4,12 +4,17 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import LiElements from "../components/LiElements";
 import { CRMContext } from "../context/CRMContext";
+import TextArea from "../components/TextArea";
 
 function Home() {
   const { inputRefs, setInputRefs, handleUpdate, updateBtn, addNewNoteBtn, addNewLeadBtn, value, setValue, addToRefs, name, lastName, phone, email, inputFields, setName, setLastName, setPhone, setEmail, setInputFields, leads, notes, setLeads, setNotes, activeRecord, addNewLead } = useContext(CRMContext)
 
-  const data = ""
-
+  let values = ""
+  const handleValueChange = (index) => {
+    values = [...inputFields];
+    setValue(values[index])
+    setInputFields(values);
+  };
 
   const handleRemoveFields = (e, index) => {
     e.preventDefault()
@@ -17,11 +22,7 @@ function Home() {
     newInputFields.splice(index, 1);
     setInputFields(newInputFields);
   };
-  const handleValueChange = (e, index) => {
-    const values = [...inputFields];
-    setValue(values[index])
-    setInputFields(values);
-  };
+
   const addNewNote = (e) => {
     e.preventDefault()
     setInputFields([...inputFields, { value: "" }])
@@ -39,6 +40,7 @@ function Home() {
     const filterValue = txtSearch.value.trim().toLowerCase();
     filterFunc(filterValue);
   }
+  console.log(activeRecord)
   return (
     <div className="container shadow p-3 my-5 bg-primary-subtle">
       <h3 className="text-center text-info">*** CRM Project ***</h3>
@@ -81,8 +83,7 @@ function Home() {
             inputFields.map((inputField, index) => (
               <div className="inputs col-12 col-md-10" key={index}>
                 <div className="form-floating pb-3 px-2 position-relative">
-                  <textarea key={index} ref={() => addToRefs()} className="form-control" placeholder="Leave a comment here" maxLength={512} style={{ height: 100 }} value={activeRecord != 0 ? value[index] : inputField.value}
-                    onChange={(e) => handleValueChange(e, index)} />
+                  <TextArea index={index} inputField={inputField} value={value} handleValueChange={handleValueChange} />
                   <label htmlFor={`note${index + 2}`}>Note</label>
                   <button className="delete-btn btn-close position-absolute top-0 end-0 p-3" onClick={(e) => handleRemoveFields(e, index)}>
                   </button>
