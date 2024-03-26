@@ -13,18 +13,10 @@ function CRMContextProvider({ children }) {
     const [leads, setLeads] = useState([])
     const [notes, setNotes] = useState([])
     const inputRefs = useRef([])
-    const [onlyNotes, setOnlyNotes] = useState()
+    const [onlyNotes, setOnlyNotes] = useState([])
+    const [value, setValue] = useState([])
     inputRefs.current = []
 
-    const addToRefs = (ref) => {
-        if (ref && !inputRefs.current.includes(ref)) {
-            inputRefs.current.push(ref)
-        }
-        const arr = []
-        onlyNotes.map((note, index) => arr[index] = note)
-        inputRefs.current.map((input, index) =>
-            input.value = arr[index])
-    }
 
     const handleRemove = (id) => {
         const deletedLeads = leads.filter(lead => lead.id !== id)
@@ -33,19 +25,34 @@ function CRMContextProvider({ children }) {
         setNotes(deletedNotes)
     }
     const handleEdit = (id) => {
+
         const editedLead = leads.filter(lead => lead.id == id)
         const editedNote = notes.filter(note => note.id == id)
         setName(editedLead[0].name)
         setLastName(editedLead[0].lastName)
         setPhone(editedLead[0].phone)
         setEmail(editedLead[0].email)
-
-        editedNote[0].notes.map(((note) => inputRefs.current.value = note))
-
         setInputFields(editedNote[0].notes)
         setOnlyNotes(editedNote[0].notes)
 
     }
+    useEffect(() => {
+        refsToWrite()
+    }, [onlyNotes.length])
+
+    const addToRefs = (ref) => {
+        if (ref && !inputRefs.current.includes(ref)) {
+            inputRefs.current.push(ref)
+        }
+
+    }
+
+    const refsToWrite = () => {
+        const arr = []
+        onlyNotes.map((note, index) => arr[index] = note)
+        setValue(arr)
+    }
+
 
 
     const handleUpdate = () => {
@@ -65,7 +72,7 @@ function CRMContextProvider({ children }) {
 
     })
 
-    return <CRMContext.Provider value={{ addToRefs, inputRefs, active, setActive, name, setName, setLastName, setPhone, setEmail, setInputFields, lastName, phone, email, inputFields, leads, notes, setLeads, setNotes, handleRemove, handleEdit, handleUpdate }}>
+    return <CRMContext.Provider value={{ value, setValue, addToRefs, inputRefs, active, setActive, name, setName, setLastName, setPhone, setEmail, setInputFields, lastName, phone, email, inputFields, leads, notes, setLeads, setNotes, handleRemove, handleEdit, handleUpdate }}>
         {children}
     </CRMContext.Provider>
 }
