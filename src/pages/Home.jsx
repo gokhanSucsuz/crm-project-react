@@ -6,9 +6,9 @@ import LiElements from "../components/LiElements";
 import { CRMContext } from "../context/CRMContext";
 
 function Home() {
-  const { inputRefs, setInputRefs, handleUpdate, updateBtn, addNewNoteBtn, addNewLeadBtn, value, addToRefs, name, lastName, phone, email, inputFields, setName, setLastName, setPhone, setEmail, setInputFields, leads, notes, setLeads, setNotes, activeRecord, addNewLead } = useContext(CRMContext)
+  const { inputRefs, setInputRefs, handleUpdate, updateBtn, addNewNoteBtn, addNewLeadBtn, value, setValue, addToRefs, name, lastName, phone, email, inputFields, setName, setLastName, setPhone, setEmail, setInputFields, leads, notes, setLeads, setNotes, activeRecord, addNewLead } = useContext(CRMContext)
 
-
+  const data = ""
 
 
   const handleRemoveFields = (e, index) => {
@@ -19,9 +19,7 @@ function Home() {
   };
   const handleValueChange = (e, index) => {
     const values = [...inputFields];
-    values[index] = e.target.value;
-    const refs = inputRefs.current
-    refs[index].value = e.target.value;
+    setValue(values[index])
     setInputFields(values);
   };
   const addNewNote = (e) => {
@@ -83,8 +81,7 @@ function Home() {
             inputFields.map((inputField, index) => (
               <div className="inputs col-12 col-md-10" key={index}>
                 <div className="form-floating pb-3 px-2 position-relative">
-                  <textarea ref={() => addToRefs()} className="form-control" placeholder="Leave a comment here" maxLength={512} style={{ height: 100 }} value={
-                    value.length != 0 && activeRecord != 0 ? value[index] : inputField.value}
+                  <textarea key={index} ref={() => addToRefs()} className="form-control" placeholder="Leave a comment here" maxLength={512} style={{ height: 100 }} value={activeRecord != 0 ? value[index] : inputField.value}
                     onChange={(e) => handleValueChange(e, index)} />
                   <label htmlFor={`note${index + 2}`}>Note</label>
                   <button className="delete-btn btn-close position-absolute top-0 end-0 p-3" onClick={(e) => handleRemoveFields(e, index)}>
